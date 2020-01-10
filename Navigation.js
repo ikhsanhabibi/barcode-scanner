@@ -1,6 +1,7 @@
 import One from "./One";
 import Two from "./Two";
 import BarcodeScanner from "./BarcodeScanner";
+import Forms from "./Forms";
 
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -10,7 +11,8 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 const Navigation = createBottomTabNavigator({
     BarcodeScanner: BarcodeScanner,
     One: One,
-    Two: Two
+    Two: Two,
+    Forms: Forms
 });
 
 export default createAppContainer(Navigation);
