@@ -18,3 +18,10 @@ This project was built in expo, that means ios and android folder should not be 
 - SDK location not found : https://stackoverflow.com/questions/32634352/react-native-android-build-failed-sdk-location-not-found
 - build project ("./gradlew clean")
 - to run app in android | npm run android
+
+
+
+
+# FEATURE
+- Barcode Scanner : https://docs.expo.io/versions/latest/sdk/bar-code-scanner/ (using Permissions.CAMERA)
+- Navigation : https://reactnavigation.org/docs/en/common-mistakes.html#docsNav (common mistakes)
