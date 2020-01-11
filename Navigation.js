@@ -15,4 +15,8 @@ const Navigation = createBottomTabNavigator({
     Forms: Forms
 });
 
+const ScreenNavigator = createStackNavigator({
+    BarcodeScanner: Forms
+});
+
 export default createAppContainer(Navigation);
