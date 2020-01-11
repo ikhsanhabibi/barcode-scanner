@@ -1,6 +1,6 @@
-import firebase from "firebase";
+import Firebase from "firebase";
 
-var firebaseConfig = {
+var config = {
     apiKey: "AIzaSyCrkrds8fsesG-coZDYt9OlqjlPQdjye2M",
     authDomain: "react-native-1eb41.firebaseapp.com",
     databaseURL: "https://react-native-1eb41.firebaseio.com",
@@ -11,7 +11,5 @@ var firebaseConfig = {
     measurementId: "G-56PZZQM5MG"
 };
 // Initialize Firebase
-let app = firebase.initializeApp(firebaseConfig);
-//firebase.analytics();
-
+let app = Firebase.initializeApp(config);
 export const db = app.database();
