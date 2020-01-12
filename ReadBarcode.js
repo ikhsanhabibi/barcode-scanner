@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, Linking } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
 import { createStackNavigator } from "react-navigation-stack";
@@ -18,12 +18,22 @@ export default class ReadBarcode extends React.Component {
             hasCameraPermission: null,
             scanned: false,
             barcodeData: "",
-            barcodeType: "",
-            detailsIsVisible: false,
-            product: []
+            barcodeType: ""
         };
+
+        this.detailsIsVisible = false;
+        this.title = "";
+        this.url = "";
+        this.description = "";
+
         this.handleBarCodeScanned = this.handleBarCodeScanned.bind(this);
     }
+
+    state = {
+        title: "",
+        url: "",
+        description: ""
+    };
 
     readBarcode() {
         const barcodeToRead = this.state.barcodeData;
@@ -38,16 +48,27 @@ export default class ReadBarcode extends React.Component {
                 arr = Object.values(snapshot.val());
                 //console.log(arr);
 
-                let obj = arr.find(
-                    ({ barcodeNumber }) => barcodeNumber === barcodeToRead
-                );
-
                 let result = arr.filter(o => {
                     return o.barcodeNumber === barcodeToRead;
                 });
                 //console.log(obj);
-                console.log(result);
+                //console.log(result);
+                return result;
+            })
+            .catch(error => {
+                console.log("error ", error);
             });
+    }
+
+    changeState() {
+        let t = result[0].title;
+        let u = result[0].url;
+        let d = result[0].description;
+        console.log(t, u, d);
+
+        this.setState({ title: t });
+        this.setState({ url: u });
+        this.setState({ description: d });
     }
 
     handleBarCodeScanned = ({ type, data }) => {
@@ -117,13 +138,24 @@ export default class ReadBarcode extends React.Component {
                         }}
                     >
                         {this.readBarcode()}
+
                         <Text style={{}}>
                             Barcode type : {this.state.barcodeType}
                         </Text>
                         <Text style={{}}>
                             Barcode number: {this.state.barcodeData}
                         </Text>
-                        <Text style={{}}>Title: {this.state.product}</Text>
+                        <Text style={{}}>Title: {this.state.title}</Text>
+
+                        <Text
+                            style={{}}
+                            onPress={() => Linking.openURL(this.state.url)}
+                        >
+                            Go to: {this.state.url}
+                        </Text>
+                        <Text style={{}}>
+                            Description: {this.state.description}
+                        </Text>
                     </View>
                 ) : null}
 
