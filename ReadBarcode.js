@@ -8,6 +8,9 @@ import * as Permissions from "expo-permissions";
 
 import Details from "./Details";
 
+import firebase from "firebase";
+import { db } from "./Firebase";
+
 export default class ReadBarcode extends React.Component {
     constructor(props) {
         super(props);
@@ -16,30 +19,42 @@ export default class ReadBarcode extends React.Component {
             scanned: false,
             barcodeData: "",
             barcodeType: "",
-            detailsIsVisible: false
+            detailsIsVisible: false,
+            product: []
         };
         this.handleBarCodeScanned = this.handleBarCodeScanned.bind(this);
     }
 
     readBarcode() {
-        const barcodeToRead = this.barcodeData;
+        const barcodeToRead = this.state.barcodeData;
+        //console.log("barcodeToRead:    " + barcodeToRead);
+
         firebase
-            .ref("products")
+            .database()
+            .ref("/product")
             .once("value")
             .then(snapshot => {
-                snapshot
-                    .val()
-                    .filter(product => product.barcodeNumber === barcodeToRead);
-                console.log("done");
-                console.log(snapshot.val());
+                //console.log(Object.values(snapshot.val()));
+                arr = Object.values(snapshot.val());
+                //console.log(arr);
+
+                let obj = arr.find(
+                    ({ barcodeNumber }) => barcodeNumber === barcodeToRead
+                );
+
+                let result = arr.filter(o => {
+                    return o.barcodeNumber === barcodeToRead;
+                });
+                //console.log(obj);
+                console.log(result);
             });
     }
 
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({
             scanned: true,
-            barcodeType: JSON.stringify(type),
-            barcodeData: JSON.stringify(data)
+            barcodeType: type,
+            barcodeData: data
         });
 
         this.props.navigation.navigate("Details", {
@@ -101,9 +116,14 @@ export default class ReadBarcode extends React.Component {
                             backgroundColor: "white"
                         }}
                     >
+                        {this.readBarcode()}
                         <Text style={{}}>
-                            Details about product{this.readBarcode()}
+                            Barcode type : {this.state.barcodeType}
                         </Text>
+                        <Text style={{}}>
+                            Barcode number: {this.state.barcodeData}
+                        </Text>
+                        <Text style={{}}>Title: {this.state.product}</Text>
                     </View>
                 ) : null}
 
